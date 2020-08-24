@@ -1,6 +1,6 @@
 ![logo](_media/gengine.svg)
 # gengine
--  [BILIBILI][1] open-source golang rule engine
+-  [BILIBILI][1] open source golang rule engine
 
  [1]: https://www.bilibili.com
 
