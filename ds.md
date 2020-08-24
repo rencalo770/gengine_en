@@ -3,7 +3,7 @@
 gengine support 4 main data structure , they are golang struct, base-type map、base-type array and base-type slice (golang's feature decide it!), in details:
 
 ### struct
-** the injected struct must be pointer,or you can't change the field value of struct you inject**, example:
+**the injected struct must be pointer,or you can't change the field value of struct you inject**, example:
 
 ```go
 	user := &User{

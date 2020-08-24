@@ -14,7 +14,7 @@ func (g *Gengine)ExecuteSelectedRules(rb * builder.RuleBuilder, names []string)
 - parameter "names", translate rules' names to this function, such as when```name :=[]string{"1", "7", "3"}```,gengine execute the 3 user-selected rules based on rules' priority.  
 - if user selected rules don't exist, gengine will log it.
 
-#### ExecuteSelectedRulesConcurrent方法
+#### ExecuteSelectedRulesConcurrent
 ```go
 func (g *Gengine)ExecuteSelectedRulesConcurrent(rb * builder.RuleBuilder, names []string) 
 ```

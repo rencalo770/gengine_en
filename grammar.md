@@ -11,20 +11,20 @@ begin
 end`
 ```
 as bellow, gengine DSL is composed of:
-- keyword rule, it is followed closely by "rule name" and "rule description",both of them are needed. when ****there are many rules in one gengine instance, rule's name must be unique****, or the rules with same name will be left just one!
-- keyword salience, is followed by an integer ,it means the priority of the rule, it is need, but not must be needed. when user don't set it, it will be unknown!
-- keyword begin and keyword end wrap the rule body(rule logic),they are must be needed!
+- keyword "rule", it is followed closely by "rule name" and "rule description",both of them are needed. when ****there are many rules in one gengine instance, rule's name must be unique****, or the rules with same name will be left just one!
+- keyword "salience", is followed by an integer ,it means the priority of the rule, it is need, but not must be needed. when user don't set it, it will be unknown!
+- keyword "begin" and keyword "end" wrap the rule body(rule logic),they are must be needed!
 
 ### Rule Body Grammar
 
- the grammar the gengine support is similar to golang, java, C/C++ and so on， but it is more easy!
+ the grammar the gengine support is similar to golang, java, C/C++ and so on, but it is more easy!
  
 #### Supported Calculate of  Rule Body:
 - Support addition, subtraction, multiplication and division operations, and addition between string
 - Complete logic operation(&&、 ||、 !)
 - Operator: ==, !=, \>, <,  \>=, <=
 - support brackets 
-- priority decent one by one: brackets, !, multiplication and division, addition and subtraction, logic(&&,||) 
+- priority down one by one: **brackets** -> **!** > **multiplication and division** > **addition and subtraction** > **logic(&&,||)** 
 
 #### Support Base Type of Rule Body
 - string
