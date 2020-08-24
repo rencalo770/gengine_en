@@ -9,8 +9,8 @@
 ![Github forks](https://img.shields.io/github/forks/rencalo770/gengine.svg)
 
 [Github](https://github.com/rencalo770/gengine)
-[Design](https://xie.infoq.cn/article/40bfff1fbca1867991a1453ac)
 [Get Start](introduce)
+[Go Chinese Doc](https://rencalo770.github.io/gengine_doc)
 
 
 <!-- 背景图片 -->
