@@ -108,5 +108,66 @@ func Test_Multi(t *testing.T){
 - ATTENTION:  compile rules is CPU INTENSIVE，commonly, when user update the rules and there are many gengine instances in your service，please just build a ```ruleBuilder```, the last gengine instance get the updated rules by copy the new ```ruleBuilder```. 
 
 
+#### In True Servie
+
+please load rules or update rules as follow in true service:
+
+```go
+type  MyService  struct{
+	Kc       *base.KnowledgeContext
+	Dc       *context.DataContext
+	Rb       *builder.RuleBuilder
+	Gengine  *engine.Gengine
+
+	//field...
+}
+
+//init
+func NewMyService(ruleStr string, /* other params */ ) *MyService {
+
+	dataContext := context.NewDataContext()
+	// there add you want to use in every request
+	dataContext.Add("makePanic", MakePanic)
+
+	knowledgeContext := base.NewKnowledgeContext()
+	ruleBuilder := builder.NewRuleBuilder(knowledgeContext, dataContext)
+	e := ruleBuilder.BuildRuleFromString(ruleStr)
+	if e != nil {
+		panic(e)
+	}
+	gengine := engine.NewGengine()
+
+	return &MyService{
+		Kc      : knowledgeContext,
+		Dc      : dataContext,
+		Rb      : ruleBuilder,
+		Gengine : gengine,
+	}
+}
+
+// when user want to update rules in running time, use it
+func (ms *MyService)UpdateRule(newRuleStr string) error {
+
+	rb := builder.NewRuleBuilder(ms.Kc, ms.Dc)
+	e := rb.BuildRuleFromString(newRuleStr)
+	if e != nil {
+		return  e
+	}
+	//replace old ptr
+	ms.Rb = rb
+	return nil
+}
+
+//service
+func (ms *MyService) Service(name string, req interface{}) error {
+
+	//the req just use once in this request
+	ms.Dc.Add(name, req)
+	e := ms.Gengine.Execute(ms.Rb, true)
+	return e
+}
+
+```
+
 
 
