@@ -9,7 +9,6 @@ package test
 import (
 	"bytes"
 	"fmt"
-	"gengine/base"
 	"gengine/builder"
 	"gengine/context"
 	"gengine/engine"
@@ -64,8 +63,7 @@ func Test_Multi(t *testing.T){
     dataContext.Add("User", user)
 
 	//init rule engine
-	knowledgeContext := base.NewKnowledgeContext()
-	ruleBuilder := builder.NewRuleBuilder(knowledgeContext,dataContext)
+	ruleBuilder := builder.NewRuleBuilder(dataContext)
 
 
 	start1 := time.Now().UnixNano()
@@ -73,7 +71,7 @@ func Test_Multi(t *testing.T){
 	err := ruleBuilder.BuildRuleFromString(rule1) //string(bs)
 	end1 := time.Now().UnixNano()
 
-	logrus.Infof("rules num:%d, load rules cost time:%d", len(knowledgeContext.RuleEntities), end1-start1 )
+	logrus.Infof("rules num:%d, load rules cost time:%d", len(ruleBuilder.Kc.RuleEntities), end1-start1 )
 
 	if err != nil{
 		logrus.Errorf("err:%s ", err)
@@ -105,7 +103,7 @@ func Test_Multi(t *testing.T){
 - from the example, we can find that ,****the compile of rules and the execute of rule is async****. so user can use this feature, to update the rules in gengine but not need to stop service.
 - Usually, create a new ```ruleBuilder```to accept new rules and compile, when compile finished, then use the new ```ruleBuilder```pointer to replace old ```ruleBuilder```pointer to update the rules in gengine.
  in addtion,user can use ```ruleBuilder``` to check the grammar of rules in async.
-- ATTENTION:  compile rules is CPU INTENSIVE，commonly, when user update the rules and there are many gengine instances in your service，please just build a ```ruleBuilder```, the last gengine instance get the updated rules by copy the new ```ruleBuilder```. 
+- ATTENTION:  compile rules is CPU INTENSIVE,commonly, when user update the rules and there are many gengine instances in your service,please just build a ```ruleBuilder```, the last gengine instance get the updated rules by copy the new ```ruleBuilder```. 
 
 
 #### In True Servie
@@ -114,7 +112,6 @@ please load rules or update rules as follow in true service:
 
 ```go
 type  MyService  struct{
-	Kc       *base.KnowledgeContext
 	Dc       *context.DataContext
 	Rb       *builder.RuleBuilder
 	Gengine  *engine.Gengine
@@ -129,8 +126,7 @@ func NewMyService(ruleStr string, /* other params */ ) *MyService {
 	// there add what you want to use in every request
 	dataContext.Add("println", fmt.Println)
 
-	knowledgeContext := base.NewKnowledgeContext()
-	ruleBuilder := builder.NewRuleBuilder(knowledgeContext, dataContext)
+	ruleBuilder := builder.NewRuleBuilder(dataContext)
 	e := ruleBuilder.BuildRuleFromString(ruleStr)
 	if e != nil {
 		panic(e)
@@ -138,7 +134,6 @@ func NewMyService(ruleStr string, /* other params */ ) *MyService {
 	gengine := engine.NewGengine()
 
 	return &MyService{
-		Kc      : knowledgeContext,
 		Dc      : dataContext,
 		Rb      : ruleBuilder,
 		Gengine : gengine,
@@ -148,7 +143,7 @@ func NewMyService(ruleStr string, /* other params */ ) *MyService {
 // when user want to update rules in running time, use it
 func (ms *MyService)UpdateRule(newRuleStr string) error {
 
-	rb := builder.NewRuleBuilder(ms.Kc, ms.Dc)
+	rb := builder.NewRuleBuilder(ms.Dc)
 	e := rb.BuildRuleFromString(newRuleStr)
 	if e != nil {
 		return  e

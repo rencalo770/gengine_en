@@ -37,4 +37,4 @@ func (gp *GenginePool)ExecuteRulesWithStopTag(reqName string, req interface{}, r
 //and
 func (gp *GenginePool)ExecuteRulesWithMultiInputAndStopTag(data map[string]interface{}, stag *Stag) error
 ```
-- ATTENTION: in gengine pool，use the same function to control,because the control of execute model has been split to```func (gp *GenginePool)SetExecModel(execModel int) error```
+- ATTENTION: in gengine pool,use the same function to control,because the control of execute model has been split to```func (gp *GenginePool)SetExecModel(execModel int) error```
