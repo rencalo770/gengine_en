@@ -1,6 +1,6 @@
 * [Introduction](introduce)
 * [Example](example)
-* [framework](framework)
+* [Framework](framework)
 * [Grammar](grammar)
 * [Execute Model](em)
 * [Select Rules to Execute](select)
