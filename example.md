@@ -1,5 +1,5 @@
 # gengine example
-there is an easy example of gengine 
+There is an easy example of gengine, in real business, we highly recommend you to use gengine pool API (https://github.com/bilibili/gengine/blob/main/engine/gengine_pool.go) 
 
 #### example
 ```go
@@ -9,9 +9,9 @@ package test
 import (
 	"bytes"
 	"fmt"
-	"gengine/builder"
-	"gengine/context"
-	"gengine/engine"
+	"github.com/bilibili/gengine/builder"
+	"github.com/bilibili/gengine/context"
+	"github.com/bilibili/gengine/engine"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"strconv"
@@ -100,69 +100,6 @@ func Test_Multi(t *testing.T){
 - engine accept ruleBuilder, and to execute rules with the execute-model which user chooses
 
 #### Tips
-- from the example, we can find that ,****the compile of rules and the execute of rule is async****. so user can use this feature, to update the rules in gengine but not need to stop service.
-- Usually, create a new ```ruleBuilder```to accept new rules and compile, when compile finished, then use the new ```ruleBuilder```pointer to replace old ```ruleBuilder```pointer to update the rules in gengine.
- in addtion,user can use ```ruleBuilder``` to check the grammar of rules in async.
-- ATTENTION:  compile rules is CPU INTENSIVE,commonly, when user update the rules and there are many gengine instances in your service,please just build a ```ruleBuilder```, the last gengine instance get the updated rules by copy the new ```ruleBuilder```. 
-
-
-#### In True Servie
-
-please load rules or update rules as follow in true service:
-
-```go
-type  MyService  struct{
-	Dc       *context.DataContext
-	Rb       *builder.RuleBuilder
-	Gengine  *engine.Gengine
-
-	//field...
-}
-
-//init
-func NewMyService(ruleStr string, /* other params */ ) *MyService {
-
-	dataContext := context.NewDataContext()
-	// there add what you want to use in every request
-	dataContext.Add("println", fmt.Println)
-
-	ruleBuilder := builder.NewRuleBuilder(dataContext)
-	e := ruleBuilder.BuildRuleFromString(ruleStr)
-	if e != nil {
-		panic(e)
-	}
-	gengine := engine.NewGengine()
-
-	return &MyService{
-		Dc      : dataContext,
-		Rb      : ruleBuilder,
-		Gengine : gengine,
-	}
-}
-
-// when user want to update rules in running time, use it
-func (ms *MyService)UpdateRule(newRuleStr string) error {
-
-	rb := builder.NewRuleBuilder(ms.Dc)
-	e := rb.BuildRuleFromString(newRuleStr)
-	if e != nil {
-		return  e
-	}
-	//replace old ptr
-	ms.Rb = rb
-	return nil
-}
-
-//service
-func (ms *MyService) Service(name string, req interface{}) error {
-
-	//the req just use once in this request
-	ms.Dc.Add(name, req)
-	e := ms.Gengine.Execute(ms.Rb, true)
-	return e
-}
-
-```
-
-
-
+- From the example, we can find that ,****the compile of rules and the execute of rule is async****. so user can use this feature, to update the rules in gengine but not need to stop service.
+- ATTENTION: compile rules is CPU INTENSIVE, We highly recommend you to complete your business by gengine pool API(https://github.com/bilibili/gengine/blob/main/engine/gengine_pool.go)
+- In addtion,user can use ```ruleBuilder``` to check the grammar of rules in async.

@@ -1,9 +1,17 @@
 # Best Practices
-- practise in many business, we find that the hardest questions when use gengine is that concurrent questions. So made tow examples for you in real business.
+-From the summary and analysis of using gengine in various business scenarios, problems that are difficult to notice or test are concurrency security issues
 
-### example 1
-- do not use gengine pool in business.(we still recommend you to use gengine pool)
 
+### Example 1
+-Precautions for using gengine single instance directly<br/>
+<font color=red>When the rule is executed, the rule in a gengine instance is stateful, and this state starts from the execution of the rule until the variable used by this gengine instance is not used in the code</font>. This means that if the second request is in the state of the first request, the gengine instance used by the first request is used, even if it is executed sequentially,
+It can also cause concurrency problems (such as map concurrent read and write panic, data state changes do not meet expectations), usually, this is a point that is hard to notice.
+Therefore, in real business scenarios, two points should be noted:
+1. The state between different requests should not overlap. When in a concurrent scenario, each request should have an exclusive gengine instance until the state ends before it can be released.
+2. Try not to share variables between each request. If you really want to share, you must also ensure concurrency safety (if this is not guaranteed, even if gengine is not used, there will be concurrency problems)
+3. It is recommended to use gengine pool
+
+-Examples:
 ```golang
 package server
 
@@ -157,9 +165,10 @@ func Test_self(t *testing.T) {
 }
 ```
 
-### example 2
-- use gengine pool
-
+### Example 2
+-Precautions for using thread pool<br/>
+<font color=red>When using the gengine pool, the pool guarantees that the instances are isolated, but the pool cannot guarantee that the variables in the gengine instance injected into the pool by the user are not shared or thread-safe</font>,
+Therefore, in order to avoid concurrency safety issues, every time a gengine instance in the pool is taken to execute the rules, the variables injected into the instance by the user are best to be re-injected by the newly instantiated variables, or thread-safe.
 
 ```golang
 

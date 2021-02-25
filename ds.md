@@ -1,108 +1,109 @@
-# Gengine Supported Data Structure
+# Data structure supported by gengine
 
-gengine support 4 main data structure , they are golang struct, base-type map、base-type array and base-type slice (golang's feature decide it!), in details:
+gengine mainly supports four data structures, namely golang's struct, and basic types of map, array and slice. In order to maintain simplicity and language independence, the following operations of these four structures are supported:
 
-### struct
-**the injected struct must be pointer,or you can't change the field value of struct you inject**, example:
+### Inject struct
+**The injected struct must be injected in the form of a pointer, otherwise the attribute value of the structure cannot be changed in the rules**, an example of the injected structure is as follows:
 
 ```go
-	user := &User{
-		Name: "Calo",
-		Age:  0,
-		Male: true,
-	}
+user := &User{
+Name: "Calo",
+Age: 0,
+Male: true,
+}
 
-	dataContext := context.NewDataContext()
-    //inject
-	dataContext.Add("User", user)
+dataContext := context.NewDataContext()
+//inject
+dataContext.Add("User", user)
 ```
-test: https://github.com/rencalo770/gengine/blob/master/test/mutli_rules_test.go 
+Test: https://github.com/bilibili/gengine/blob/main/test/mutli_rules_test.go
 
-### map
+### Inject map
 
-**gengine only can set map value by key, and injected map must be pointer map, or the map attached to pointer-struct ; when inject non-pointer-map to dataContext, you only can use key to get value, can't set value**
+gengine can only take or set values ​​for map based on key
+
 ```go
-    //define
-    type MS struct {
-	    MII *map[int]int
-	    MSI map[string]int
-	    MIS map[int]string
+//define
+type MS struct {
+    MII *map[int]int
+    MSI map[string]int
+    MIS map[int]string
+}
+    
+//init
+MS := &MS{
+MII: &map[int]int{1: 1},
+MSI: map[string]int{"hello": 1},
+MIS: map[int]string{1: "helwo"},
+}
+    
+//define
+var MM map[int]int
+MM = map[int]int{1:1000,2:1000}
+    
+//inject
+dataContext := context.NewDataContext()
+dataContext.Add("MS", MS)
+//single map inject, must be ptr
+dataContext.Add("MM", &MM)
+```
+Test: https://github.com/bilibili/gengine/blob/main/test/map_slice_array/array_test.go
+
+### Inject array
+**gengine can only get or set the value of an array based on index, and the injected array must be a pointer array, or an array attached to a structure pointer. When injecting dataContext into a non-pointer array, you can only use index to get Value instead of setting value**
+```go
+    
+//define
+type AS struct {
+     MI *[3]int
+     MM [4]int
+}
+    
+//init
+AS := &AS{
+   MI: &[3]int{},
+   MM: [4]int{},
+  }
+    
+//define
+var AA [2]int
+AA = [2]int{1, 2}
+    
+dataContext := context.NewDataContext()
+dataContext.Add("PrintName",fmt.Println)
+dataContext.Add("AS", AS)
+//single array inject, must be ptr
+dataContext.Add("AA", &AA)
+```
+Test: https://github.com/bilibili/gengine/blob/main/test/map_slice_array/array_test.go
+
+### Inject slice
+
+gengine can only take or set values ​​for slices based on index
+
+```go
+    
+//define
+type SS struct {
+MI []int
+MM *[]int
     }
-    
-    //init
-	MS := &MS{
-		MII: &map[int]int{1: 1},
-		MSI: map[string]int{"hello": 1},
-		MIS: map[int]string{1: "helwo"},
-	}
-    
-    //define
-	var MM map[int]int
-	MM = map[int]int{1:1000,2:1000}
-    
-    //inject
-	dataContext := context.NewDataContext()
-	dataContext.Add("MS", MS)
-	//single map inject, must be ptr
-	dataContext.Add("MM", &MM)
-```
-测试:https://github.com/rencalo770/gengine/blob/master/test/map_slice_array/map_test.go 
-
-### Array
-**gengine only can use index to set value for array or get value from array, and injected array, must be pointer array or the array attached to pointer struct. when inject non-pointer-array to dataContext. you only can get value by index, but not set value**
-```go
-    
-    //define
-    type AS struct {
-	    MI *[3]int
-	    MM [4]int
-    }
-    
-    //init
-    AS := &AS{
-   		MI: &[3]int{},
-   		MM: [4]int{},
-   	}
-    
-    define
-   	var AA [2]int
-   	AA = [2]int{1, 2}
-    
-   	dataContext := context.NewDataContext()
-   	dataContext.Add("PrintName",fmt.Println)
-   	dataContext.Add("AS", AS)
-   	//single array inject, must be ptr
-   	dataContext.Add("AA", &AA)
-```
-test: https://github.com/rencalo770/gengine/blob/master/test/map_slice_array/array_test.go
-
-### Slice
-**gengine only can use index to set value for slice or get value from array, and injected slice, must be pointer slice or the slice attached to pointer struct. when inject non-pointer-slice to dataContext. you only can get value by index, but not set value**
-```go
-    
-    //define
-    type SS struct {
-	    MI []int
-	    MM *[]int
-    }
 
     //init
-	SS := &SS{
-		MI: []int{1,2,3,4},
-		MM: &[]int{9,1,34,5},
-	}
+SS := &SS{
+MI: []int{1,2,3,4},
+MM: &[]int{9,1,34,5},
+}
     
     //define
-	var S []int
-	S = []int{1, 2, 3}
+var S []int
+S = []int{1, 2, 3}
 
-	dataContext := context.NewDataContext()
-	dataContext.Add("PrintName",fmt.Println)
-	dataContext.Add("SS", SS)
-   	//single slice inject, must be ptr
-	dataContext.Add("S", &S)
+dataContext := context.NewDataContext()
+dataContext.Add("PrintName",fmt.Println)
+dataContext.Add("SS", SS)
+   //single slice inject, must be ptr
+dataContext.Add("S", &S)
 
 ```
-test: https://github.com/rencalo770/gengine/blob/master/test/map_slice_array/slice_test.go 
-
-
+Test: https://github.com/bilibili/gengine/blob/main/test/map_slice_array/slice_test.go

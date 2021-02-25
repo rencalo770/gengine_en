@@ -1,31 +1,31 @@
-# Extends Call in Rules
-- golang's extends feature is not true extends, in fact it is composite mode, or you can say there is no extends in golang
-- function implements some interfaces, delete the interface, there is no effect in golang.
-- Mentioned earlier,in gengine, every call  as long as it does not exceed tow layer "A.B" form call, it is legal in gengine.
+# Inheritance calls within rules
+- Golang's inheritance and implementation are not as straightforward as java. Golang's inheritance is actually a combination mode, or it can be said that golang does not inherit the concept
+- The method implements an interface. When the interface definition is deleted, it has no effect on the compilation and execution of golang code.
+- As mentioned earlier, in gengine, as long as it does not exceed the two-layer call writing in the form of A and B, it is a legal syntax.
 
-```go:
+```go
 
 //define
 type Man struct {
-	Eat string
-	Drink string
+Eat string
+Drink string
 }
 
 // define
 type Father struct {
-	*Man
-	Son string
+*Man
+Son string
 }
 
 //rule
 const ext_rule = `
-rule "extends test" "extends test" 
+rule "extends test" "extends test"
 begin
-	Father.Son = "tom"
-	Sout(Father.Son)
-	Father.Eat= "apple"
-	Sout(Father.Eat)
+Father.Son = "tom"
+Sout(Father.Son)
+Father.Eat= "apple"
+Sout(Father.Eat)
 end
 `
 ```
-test: https://github.com/rencalo770/gengine/blob/master/test/complex/extends_test.go
+Test: https://github.com/bilibili/gengine/blob/main/test/complex/extends_test.go

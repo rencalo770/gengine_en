@@ -1,12 +1,9 @@
 # Framework of Gengine 
 
-
-- from version v1.2.0, we simplified the framework of gengine, users just need make a little change to  move from old version to new version.
-- from version v1.2.0, user just need to pay attention to 4 important API of gengine, they are ```dataContext```, ```ruleBuilder``` , ```engine``` and ```GenginePool```
-- from version v1.2.0, the code of gengine is more easy to understand and use, illustration as follow:
+- there ara only four key APIs(files), they are ```dataContext```,```ruleBuilder```,```engine``` and ```GenginePool```
 
 ### dataContext
-- Code : https://github.com/rencalo770/gengine/blob/master/context/data_context.go
+- Code : https://github.com/bilibili/gengine/blob/main/context/data_context.go
 - ```dataContext``` allows user to inject APIs that will be used in gengine. 
 - example:
 ```golang
@@ -17,7 +14,7 @@
 
 
 ### ruleBuilder
-- Code: https://github.com/rencalo770/gengine/tree/master/builder
+- Code: https://github.com/bilibili/gengine/blob/main/builder/rule_builder.go
 - ruleBuilder receive ```dataContext``` instance as a parameter, and compile the string the user input to build executable rule code
 - example:
 ```go
@@ -38,7 +35,7 @@ end
 
 
 ### engine
-- Code: https://github.com/rencalo770/gengine/blob/master/engine/gengine.go
+- Code: https://github.com/bilibili/gengine/blob/main/engine/gengine.go
 - ```engine``` receive ```ruleBuilder``` instance as a parameter, and choose a execute model the user need to execute the rules in gengine
 - example:
 ```go
@@ -61,10 +58,9 @@ end
 ```
 
 ### GenginePool
+- Code: https://github.com/bilibili/gengine/blob/main/engine/gengine_pool.go
+- the APIs(and names) between gengine and gengine pool are one to one correspondence！
 - gengine pool,support user to use gengine in high QPS,it solve the high QPS and thread-safety questions. it was illustrated in the other section in this doc.
-
-### internal
-- internal dir contains the code code of gengine, use need not to care about it.
 
 
 
