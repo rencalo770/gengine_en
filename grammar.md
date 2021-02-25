@@ -101,14 +101,15 @@ end`
 ### three level call
 - gengine support A.B.C call, but not support more levels call
 - other detail:
+
 ```
 1. when grammar is C or a=C, then C can be variable, function, struct, map, slice, array and so on, such as a=100, a= Mp["hello"], a = x, a = getMessage(p1,p2..) and so on
 2. when grammar is A.C or a=A.C, A must be a struct, Then C is the same as above, such as a = A.Mp["hello"], a = A.Field1, a = A.GetMessage(p1,p2..) and so on
 3. when grammar is A.B.C or a=A.B.C, A and B must be a struct, Then C is the same as above, such as a = A.B.Mp["hello"], a =A.B.Field1, a= A.B.GetMessage(p1, p2..) and so on 
-
 ```
 
 #### Other Grammar 
+
 - for grantee make the rule grammar is not related to golang' grammar, in rule, you can call multi-return function or method, but when you define a variable to receive the return, rule just support single-return function or method(it is suggest user to set default value for return, not to return error)
 
 

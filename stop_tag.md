@@ -9,10 +9,11 @@ Certain business scenarios have this requirement: <br/>
 ### Example
 
 #### Sequence mode scene
+
 ```go
 func (g *Gengine) ExecuteWithStopTagDirect(rb *builder.RuleBuilder, b bool, sTag *Stag) error
 ```
--Test case: https://github.com/bilibili/gengine/blob/main/test/stop_tag_test/stop_tag_in_sort_model_test.go
+- Test case: https://github.com/bilibili/gengine/blob/main/test/stop_tag_test/stop_tag_in_sort_model_test.go
 
 
 #### Mixed mode scene
@@ -20,4 +21,4 @@ func (g *Gengine) ExecuteWithStopTagDirect(rb *builder.RuleBuilder, b bool, sTag
 func (g *Gengine) ExecuteMixModelWithStopTagDirect(rb * builder.RuleBuilder, sTag *Stag)
 ```
 
--Test case: https://github.com/bilibili/gengine/blob/main/test/stop_tag_test/stop_tag_in_mix_model_test.go
+- Test case: https://github.com/bilibili/gengine/blob/main/test/stop_tag_test/stop_tag_in_mix_model_test.go

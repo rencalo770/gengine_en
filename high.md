@@ -1,18 +1,18 @@
 # Advanced extension section
 
 ### Fully hot reloading implementation-background
--Up to now, we can see that the APIs we use in gengine are all pre-defined before gengine is started, and then when the initialization is complete, it can be injected into gengine to be used. This mode of use is of course good, and It can basically meet the needs of all business scenarios: For example, users can define several interfaces in advance, and then use these defined interfaces to obtain different data required by the rule during the execution process (based on the name Way to access data indicators).
--But it is possible that all the functions currently defined cannot meet the requirements, and the user must define new methods or functions to achieve new functions.
+- Up to now, we can see that the APIs we use in gengine are all pre-defined before gengine is started, and then when the initialization is complete, it can be injected into gengine to be used. This mode of use is of course good, and It can basically meet the needs of all business scenarios: For example, users can define several interfaces in advance, and then use these defined interfaces to obtain different data required by the rule during the execution process (based on the name Way to access data indicators).
+- But it is possible that all the functions currently defined cannot meet the requirements, and the user must define new methods or functions to achieve new functions.
 
 ### Reality
 Golang is a statically typed language, not as flexible as java. If you want to dynamically load code and execute it, you can only use plug-ins. gengine wraps the call implementation of plugin, and uses plugin to load and execute code hot.
 
 ### Description
--The method of dynamically loading code packaged by gengine only needs to comply with a few regulations, and it will be extremely simple to use
--gengine has supported a fully dynamic loading implementation based on golang plugin since v1.4.9
+- The method of dynamically loading code packaged by gengine only needs to comply with a few regulations, and it will be extremely simple to use
+- gengine has supported a fully dynamic loading implementation based on golang plugin since v1.4.9
 
 ### golang plugin use
--Plug-in writing
+- Plug-in writing
 
 ```go
 //package must be main
@@ -40,13 +40,13 @@ return nil
 var M = SuperMan{}
 ```
 
--Notes for plug-in writing
+- Notes for plug-in writing
 1. The package name must be main
 2. The exported variable must start with uppercase and cannot have the same name with other struct or interface definitions
 3. Execute the ```go build -buildmode=plugin -o=plugin_M_m.so plugin_superman.go'' command to generate the .so plugin file
 
 
--Plug-in usage test
+- Plug-in usage test
 
 ```go
 func Test_pligin(t *testing.T) {
@@ -93,7 +93,7 @@ println("use plugin man failed, ", err)
 4. The hot loading interfaces provided in gengine are all thread-safe
 5. Please see the test below
 
--Single instance plugin loading test
+- Single instance plugin loading test
 ```go
 func Test_plugin_with_gengine(t *testing.T) {
 
@@ -136,7 +136,7 @@ panic(err)
 }
 ```
 
--pool plugin test
+- pool plugin test
 
 ```go
 func Test_plugin_with_pool(t *testing.T) {
@@ -185,4 +185,4 @@ panic(e)
 ```
 
 ### Test location
--Test code location https://github.com/bilibili/gengine/tree/main/test/plugin
+- Test code location https://github.com/bilibili/gengine/tree/main/test/plugin

@@ -31,6 +31,7 @@ func (gp *GenginePool) UpdatePooledRulesIncremental(ruleStr string) error
 
 ### remove rule
 - batch delete
+
 ```
 //ruleBuilder中
 func (builder *RuleBuilder) RemoveRules(ruleNames []string) error 
