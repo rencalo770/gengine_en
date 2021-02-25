@@ -80,7 +80,7 @@ end`
 
 #### @name
 - use @name in rule, @name will be explain to the current rule name string which @name in
-- test: https://github.com/rencalo770/gengine/blob/master/test/at_name_test.go
+- test: https://github.com/bilibili/gengine/blob/main/test/at_name_test.go
 
 #### @id
 - use @id in rule, it means when the rule name string can be transferred to integer, @id equals the transferred integer value. or @id is 0. 
