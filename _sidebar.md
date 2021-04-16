@@ -8,6 +8,7 @@
 * [update rules](update)
 * [support Grammar](grammar)
 * [Execute Model](em)
+* [DAG model](dag)
 * [N-M model](nm)
 * [Select Rules to Execute](select)
 * [Stop Tag](stop_tag)
